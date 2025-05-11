@@ -1,31 +1,49 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import 'remixicon/fonts/remixicon.css'
+import 'remixicon/fonts/remixicon.css';
 
 function App() {
   let [show, setShow] = useState(false);
+  // State to track loading status
+  const [isLoading, setIsLoading] = useState(true);
+  // State to control when to show the mask animation
+  const [showMaskAnimation, setShowMaskAnimation] = useState(false);
   // Use useState to track mobile state
   const [isMobile, setIsMobile] = useState(false);
-  
+
   // Set up mobile detection on component mount and window resize
   React.useEffect(() => {
     // Safe check for window object (prevents SSR issues)
     if (typeof window !== 'undefined') {
       const checkMobile = () => setIsMobile(window.innerWidth < 768);
-      
+
       // Set initial value
       checkMobile();
-      
+
       // Add resize listener
       window.addEventListener('resize', checkMobile);
-      
+
       // Clean up
       return () => window.removeEventListener('resize', checkMobile);
     }
   }, []);
 
+  // Effect to simulate loading process
+  useEffect(() => {
+    // Simulate loading process (e.g., assets, data, etc.)
+    const loadingTimer = setTimeout(() => {
+      setIsLoading(false);
+      setShowMaskAnimation(true);
+    }, 3000); 
+
+    return () => clearTimeout(loadingTimer);
+  }, []);
+
+  // GSAP animation for the mask effect - only runs after loading is complete
   useGSAP(() => {
+    if (!showMaskAnimation) return;
+
     const t1 = gsap.timeline();
     t1.to(".vi-mask-group", {
       rotate: 10,
@@ -49,8 +67,8 @@ function App() {
           }
         }
       }
-    })
-  })
+    });
+  }, [showMaskAnimation])
 
   useGSAP(() => {
     if (!show) return;
@@ -79,8 +97,8 @@ function App() {
     gsap.to(".character", {
       scale: 1,
       rotate: 0,
-      y: isMobile ? "20%" : "45%", 
-      x: 0, 
+      y: isMobile ? "20%" : "45%",
+      x: 0,
       duration: 2,
       delay: -.7,
       ease: "Expo.easeInOut",
@@ -112,35 +130,95 @@ function App() {
   }, [show])
   return (
     <>
-      <div className="svg flex items-center justify-center fixed top-0 left-0 z-[100] w-full h-screen overflow-hidden bg-[#000]">
-        <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <mask id="viMask">
-              <rect width="100%" height="100%" fill="black" />
-              <g className="vi-mask-group">
-                <text
-                  x="50%"
-                  y="50%"
-                  fontSize="250"
-                  textAnchor="middle"
-                  fill="white"
-                  dominantBaseline="middle"
-                  fontFamily="Arial Black"
-                >
-                  VI
-                </text>
-              </g>
-            </mask>
-          </defs>
-          <image
-            href="/bg.png"
-            width="100%"
-            height="100%"
-            preserveAspectRatio="xMidYMid slice"
-            mask="url(#viMask)"
-          />
-        </svg>
-      </div>
+      {/* Loading Screen */}
+      {isLoading && (
+        <div className="loading-screen fixed top-0 left-0 z-[200] w-full h-screen flex flex-col items-center justify-center bg-black">
+          <div className="rockstar-logo relative w-full h-full flex items-center justify-center">
+            <div className="svg flex items-center justify-center w-full h-screen overflow-hidden bg-[#000]">
+              <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                  <mask id="viMask">
+                    <rect width="100%" height="100%" fill="black" />
+                    <g className="vi-mask-group">
+                      <text
+                        x="50%"
+                        y="50%"
+                        fontSize="250"
+                        textAnchor="middle"
+                        fill="white"
+                        dominantBaseline="middle"
+                        fontFamily="Arial Black"
+                      >
+                        VI
+                      </text>
+                    </g>
+                  </mask>
+                </defs>
+                <image
+                  href="/bg.png"
+                  width="100%"
+                  height="100%"
+                  preserveAspectRatio="xMidYMid slice"
+                  mask="url(#viMask)"
+                />
+              </svg>
+              
+              {/* Enhanced loading progress bar positioned at the bottom of the SVG */}
+              <div className="absolute bottom-[10%] left-0 w-full flex flex-col items-center">
+                <div className="loading-stats flex justify-between w-64 mb-2">
+                  <span className="text-xs text-gray-400">ROCKSTAR GAMES</span>
+                  <span className="text-xs text-gray-400">VICE CITY</span>
+                </div>
+                <div className="loading-bar w-64 h-3 bg-gray-800 rounded-sm overflow-hidden">
+                  <div className="loading-progress" />
+                </div>
+                <div className="flex justify-between w-64 mt-1">
+                  <div className="loading-segments flex space-x-1">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="h-1 w-3 bg-gray-700" />
+                    ))}
+                  </div>
+                  <span className="text-xs text-gray-400">INITIALIZING</span>
+                </div>
+                <p className="loading-text text-white mt-4 text-lg font-bold">Loading Grand Theft Auto VI</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mask Animation - Only shown after loading is complete */}
+      {showMaskAnimation && (
+        <div className="svg flex items-center justify-center fixed top-0 left-0 z-[100] w-full h-screen overflow-hidden bg-[#000]">
+          <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <mask id="viMask">
+                <rect width="100%" height="100%" fill="black" />
+                <g className="vi-mask-group">
+                  <text
+                    x="50%"
+                    y="50%"
+                    fontSize="250"
+                    textAnchor="middle"
+                    fill="white"
+                    dominantBaseline="middle"
+                    fontFamily="Arial Black"
+                  >
+                    VI
+                  </text>
+                </g>
+              </mask>
+            </defs>
+            <image
+              href="/bg.png"
+              width="100%"
+              height="100%"
+              preserveAspectRatio="xMidYMid slice"
+              mask="url(#viMask)"
+            />
+          </svg>
+        </div>
+      )}
 
       {
         show && (
@@ -168,7 +246,7 @@ function App() {
                 {/* Girl */}
                 <div className='absolute w-full bottom-0 left-0 flex justify-center items-end overflow-visible' style={{ height: '0' }}>
                   <img
-                    className='character transform -translate-y-[150%] sm:-translate-y-[30%] md:-translate-y-[50%] scale-[1.2] sm:scale-[1.8] md:scale-[2] rotate-[-15deg] md:rotate-[-30deg]'
+                    className='character transform -translate-y-[200%] sm:-translate-y-[30%] md:-translate-y-[50%] scale-[1.2] sm:scale-[1.8] md:scale-[2] rotate-[-15deg] md:rotate-[-30deg]'
                     src="/girlbg.png"
                     alt="background"
                   />
