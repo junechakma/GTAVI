@@ -5,7 +5,25 @@ import 'remixicon/fonts/remixicon.css'
 
 function App() {
   let [show, setShow] = useState(false);
-  const isMobile = window.innerWidth < 768;
+  // Use useState to track mobile state
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Set up mobile detection on component mount and window resize
+  React.useEffect(() => {
+    // Safe check for window object (prevents SSR issues)
+    if (typeof window !== 'undefined') {
+      const checkMobile = () => setIsMobile(window.innerWidth < 768);
+      
+      // Set initial value
+      checkMobile();
+      
+      // Add resize listener
+      window.addEventListener('resize', checkMobile);
+      
+      // Clean up
+      return () => window.removeEventListener('resize', checkMobile);
+    }
+  }, []);
 
   useGSAP(() => {
     const t1 = gsap.timeline();
@@ -61,13 +79,13 @@ function App() {
     gsap.to(".character", {
       scale: 1,
       rotate: 0,
-      left: "25%",
-      bottom: isMobile?  "-70%": "-100%",
+      y: isMobile ? "20%" : "45%", 
+      x: 0, 
       duration: 2,
       delay: -.7,
-
       ease: "Expo.easeInOut",
     })
+
     gsap.to(".imagesdivText", {
       scale: 1,
       rotate: 0,
@@ -169,7 +187,7 @@ function App() {
             {/* Content */}
             <div className='w-full min-h-screen flex flex-col md:flex-row items-center overflow-hidden bg-black py-10 md:py-0'>
               <div className='limage w-full md:w-1/2 flex items-center justify-center mb-8 md:mb-0'>
-                <img src="/imag.png" alt="" className='w-4/5 md:w-3/4' />
+                <img src="/imag.png" alt="" className='w-full md:w-3/4' />
               </div>
               <div className='rightContent w-full md:w-1/2 relative overflow-hidden px-4 sm:px-6 md:px-0'>
                 <div className="content text-white w-full md:w-3/4 relative z-10">
