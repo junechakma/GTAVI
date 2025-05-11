@@ -36,7 +36,42 @@ function App() {
   useGSAP(() => {
     if (!show) return;
     gsap.to(".main", {
-      
+      scale: 1,
+      rotate: 0,
+      duration: 2,
+      delay: -1.2,
+      ease: "Expo.easeInOut",
+    })
+    gsap.to(".bg", {
+      scale: 1.1,
+      rotate: 0,
+      duration: 2,
+      delay: -1,
+      ease: "Expo.easeInOut",
+    })
+    gsap.to(".sky", {
+      scale: 1.1,
+      rotate: 0,
+      duration: 2,
+      delay: -.8,
+      ease: "Expo.easeInOut",
+    })
+    gsap.to(".character", {
+      scale: .8,
+      rotate: 0,
+      left: "25%",
+      bottom: "-70%",
+      duration: 2,
+      delay: -.7,
+   
+      ease: "Expo.easeInOut",
+    })
+    gsap.to(".imagesdivText", {
+      scale: 1,
+      rotate: 0,
+      duration: 2,
+      delay: -.9,
+      ease: "Expo.easeInOut",
     })
 
 
@@ -89,7 +124,7 @@ function App() {
 
       {
         show && (
-          <div className='main w-full   bg-black'>
+          <div className='main w-full relative rotate-[-30deg] scale-[1.7] bg-black'>
             <div className='navbar absolute top-0 left-0 z-[100] w-full h-[10%] px-10 py-6'>
               <div className="logo flex gap-4 items-center ">
                 <div className='lines flex flex-col gap-[5px] mt-2 '>
@@ -101,28 +136,29 @@ function App() {
               </div>
             </div>
             {/* Landing */}
-            <div className='landing w-full h-screen '>
-              <div className='iamgesdiv overflow-hidden relative w-full h-full'>
-                <img className='absolute sky scale-110 top-0 left-0 w-full h-full object-cover' src="/sky.png" alt="background" />
-                <img className='absolute bg scale-110 top-0 left-0 w-full h-full object-cover' src="/bg.png" alt="background" />
-                <div className='imagesdivText absolute w-full top-0 left-[50%] translate-x-[-10%]  flex flex-col leading-[8rem] text-white'>
+            <div className='landing overflow-hidden relative w-full h-screen z-[10]'>
+              <div className='iamgesdiv  relative w-full h-full'>
+                <img className='absolute sky  scale-[1.7] rotate-[-40deg] top-0 left-0 w-full h-full object-cover' src="/sky.png" alt="background" />
+                <img className='absolute bg  scale-[1.7] rotate-[-40deg] top-0 left-0 w-full h-full object-cover' src="/bg.png" alt="background" />
+                <div className='imagesdivText absolute w-full top-0 left-[50%] translate-x-[-10%]  flex flex-col leading-[8rem] text-white scale-[1.7] rotate-[-30deg]'>
                   <h1 className='text-[6rem] font-bold -ml-30'>Grand</h1>
                   <h1 className='text-[6rem] font-bold ml-0'>Theft</h1>
                   <h1 className='text-[6rem] font-bold -ml-26'>Auto</h1>
                 </div>
                 {/* Girl */}
-                <img className='absolute character -bottom-[70%] left-[50%] translate-x-[-50%] ' src="/girlbg.png" alt="background" />
+                <img className='absolute character  scale-[2] rotate-[-30deg] -bottom-[200%] left-[50%] translate-x-[-50%] ' src="/girlbg.png" alt="background" />
               </div>
-            </div>
-            {/* Bottom Bar */}
-            <div className='bottombar absolute bottom-0 left-0 z-[100] w-full h-[10%] px-10 py-6 bg-gradient-to-t from-black to-transparent'>
+            <div className='bottombar absolute bottom-0 left-0 z-[200] w-full h-[10%] px-10 py-6 bg-gradient-to-t from-black to-transparent'>
               <div className='flex flex-row items-center'>
-                <i className="ri-arrow-down-line text-white text-2xl font-bold"></i>
+                <i className="ri-arrow-down-line text-white text-2xl font-bold mr-2"></i>
                 <h3 className="text-white font-bold">Scroll Down</h3>
               </div>
-              <img src="/ps5.png" alt="" className='w-[200px] absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] ' />
+              <img src="/ps5.png" alt="" className='w-[200px] absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%]' />
             </div>
+            </div>
+            {/* Bottom Bar */}
 
+            {/* Content */}
             <div className='w-full h-screen items-center flex overflow-hidden bg-black'>
               <div className='limage w-1/2 flex items-center justify-center '>
                 <img src="/imag.png" alt="" className='w-3/4' />
