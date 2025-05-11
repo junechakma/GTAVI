@@ -38,7 +38,8 @@ function App() {
     gsap.to(".main", {
       scale: 1,
       rotate: 0,
-      duration: 2,
+      opacity:1,
+      duration: 3,
       delay: -1.2,
       ease: "Expo.easeInOut",
     })
@@ -124,7 +125,7 @@ function App() {
 
       {
         show && (
-          <div className='main w-full relative rotate-[-30deg] scale-[1.7] bg-black'>
+          <div className='main w-full relative rotate-[-30deg] scale-[1.7] bg-black opacity-0'>
             <div className='navbar absolute top-0 left-0 z-[100] w-full h-[10%] px-10 py-6'>
               <div className="logo flex gap-4 items-center ">
                 <div className='lines flex flex-col gap-[5px] mt-2 '>
@@ -137,7 +138,7 @@ function App() {
             </div>
             {/* Landing */}
             <div className='landing overflow-hidden relative w-full h-screen z-[10]'>
-              <div className='iamgesdiv  relative w-full h-full'>
+              <div className='iamgesdiv overflow-hidden relative w-full h-full'>
                 <img className='absolute sky  scale-[1.7] rotate-[-40deg] top-0 left-0 w-full h-full object-cover' src="/sky.png" alt="background" />
                 <img className='absolute bg  scale-[1.7] rotate-[-40deg] top-0 left-0 w-full h-full object-cover' src="/bg.png" alt="background" />
                 <div className='imagesdivText absolute w-full top-0 left-[50%] translate-x-[-10%]  flex flex-col leading-[8rem] text-white scale-[1.7] rotate-[-30deg]'>
