@@ -29,15 +29,58 @@ function App() {
     }
   }, []);
 
-  // Effect to simulate loading process
+  // Effect to wait for all images to load
   useEffect(() => {
-    // Simulate loading process (e.g., assets, data, etc.)
-    const loadingTimer = setTimeout(() => {
-      setIsLoading(false);
-      setShowMaskAnimation(true);
-    }, 3000); 
-
-    return () => clearTimeout(loadingTimer);
+    // List of all image paths that need to be loaded
+    const imagePaths = [
+      '/bg.png',
+      '/sky.png',
+      '/girlbg.png',
+      '/ps5.png',
+      '/imag.png'
+    ];
+    
+    // Track loading progress
+    let loadedCount = 0;
+    const totalImages = imagePaths.length;
+    
+    // Function to preload an image
+    const preloadImage = (src) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+          loadedCount++;
+          // Update loading progress percentage
+          const progressElement = document.querySelector('.loading-progress');
+          if (progressElement) {
+            progressElement.style.width = `${(loadedCount / totalImages) * 100}%`;
+          }
+          resolve();
+        };
+        img.onerror = reject;
+      });
+    };
+    
+    // Preload all images
+    Promise.all(imagePaths.map(path => preloadImage(path)))
+      .then(() => {
+        // All images loaded successfully
+        setTimeout(() => {
+          setIsLoading(false);
+          setShowMaskAnimation(true);
+        }, 500); // Short delay for smooth transition
+      })
+      .catch(error => {
+        console.error('Error loading images:', error);
+        // If there's an error, still proceed after a timeout
+        setTimeout(() => {
+          setIsLoading(false);
+          setShowMaskAnimation(true);
+        }, 2000);
+      });
+      
+    // No cleanup needed for this effect
   }, []);
 
   // GSAP animation for the mask effect - only runs after loading is complete
@@ -100,7 +143,7 @@ function App() {
       y: isMobile ? "20%" : "45%",
       x: 0,
       duration: 2,
-      delay: -.7,
+      delay: -.9,
       ease: "Expo.easeInOut",
     })
 
