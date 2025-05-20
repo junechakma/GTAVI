@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import 'remixicon/fonts/remixicon.css';
+import Features from '../src/components/Features.jsx';
+import Gallery from '../src/components/Gallery.jsx';
 
 function App() {
   let [show, setShow] = useState(false);
@@ -341,6 +343,14 @@ function App() {
                 </div>
                 <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-black/80 via-black/40 to-transparent z-0"></div>
               </div>
+            </div>
+            {/* Features Section */}
+            <div style={{ marginTop: '40px', marginBottom: '40px' }}>
+              <Features />
+            </div>
+            {/* Gallery Section */}
+            <div style={{ marginBottom: '40px' }}>
+              <Gallery />
             </div>
           </div>
         )
